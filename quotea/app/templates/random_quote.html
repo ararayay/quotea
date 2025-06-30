@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}Случайная цитаты{% endblock %}
+{% block title %}Случайная цитата{% endblock %}
 
 {% block content %}
 	<div class="quote-container">
-		<h2>Добавление цитаты</h2>
+		<h2>{{ data.quote }}</h2>
+    <h2>{{ data.source }}</h2>
+    <h2>{{ data.character }}</h2>
+    <h2>{{ data.views }}</h2>
+    <h2>{{ data.likes }}</h2>
+    <h2>{{ data.dislikes }}</h2>
 	</div>
 {% endblock %}

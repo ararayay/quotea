@@ -5,6 +5,13 @@
 {% block content %}
 
 	<div class="popular-container">
-		<h2>Топ-10 цитат</h2>
+    {% for popular_quote in data %}
+      <h2>{{ popular_quote.quote }}</h2>
+      <h2>{{ popular_quote.source }}</h2>
+      <h2>{{ popular_quote.character }}</h2>
+      <h2>{{ popular_quote.views }}</h2>
+      <h2>{{ popular_quote.likes }}</h2>
+      <h2>{{ popular_quote.dislikes }}</h2>
+    {% endfor %}
 	</div>
 {% endblock %}
