@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'base.css' %}" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="{% url 'home' %}" class="logo-url">
+        <span class="logo-text">QuoTea</span>
+      </a>
+    </div>
+
+    <div class="header-btns">
+      <a href="{% url 'create_quote' %}" class="header-btn">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#CC9999">
+          <path d="M24 13 L24 24 L13 24 L13 26 L24 26 L24 37 L26 37 L26 26 L37 26 L37 24 L26 24 L26 13 L24 13 Z"/>
+        </svg>
+      </a>
+
+      <a href="{% url 'popular_quotes' %}" class="header-btn">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#CC9999">
+          <path d="M25 12 L29.4 21.6 L40 22.6 L31 29.6 L34 40 L25 34 L16 40 L19 29.6 L10 22.6 L20.6 21.6 Z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
