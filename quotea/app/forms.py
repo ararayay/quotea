@@ -10,16 +10,9 @@ class AddQuote(ModelForm):
 
         widgets = {
             'quote': Textarea(attrs={
-                'placeholder': 'Цитата',
                 'rows': 2
             }),
-            'source': TextInput(attrs={
-                'placeholder': 'Источник'
-            }),
-            'character': TextInput(attrs={
-                'placeholder': 'Персонаж'
-            }),
-            'weight': NumberInput(attrs={
-                'placeholder': 'Вес'
-            }),
+            'source': TextInput(),
+            'character': TextInput(),
+            'weight': NumberInput(),
         }

@@ -6,4 +6,6 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("create_quote", views.create_quote, name="create_quote"),
     path("popular_quotes", views.popular_quotes, name="popular_quotes"),
+    path('like/<int:quote_id>/', views.like_quote, name='like_quote'),
+    path('dislike/<int:quote_id>/', views.dislike_quote, name='dislike_quote'),
 ]

@@ -6,12 +6,16 @@
 
 	<div class="popular-container">
     {% for popular_quote in data %}
-      <h2>{{ popular_quote.quote }}</h2>
-      <h2>{{ popular_quote.source }}</h2>
-      <h2>{{ popular_quote.character }}</h2>
-      <h2>{{ popular_quote.views }}</h2>
-      <h2>{{ popular_quote.likes }}</h2>
-      <h2>{{ popular_quote.dislikes }}</h2>
+      <div class="quote-card">
+        <h2 class="quote-text">{{ popular_quote.quote }}</h2>
+        <h2 class="quote-source">{{ popular_quote.source }}</h2>
+        <h2 class="quote-character">{{ popular_quote.character }}</h2>
+        <div class="quote-stats">
+          <h2 class="quote-views">👁 {{ popular_quote.views }}</h2>
+          <h2 class="quote-likes">👍 {{ popular_quote.likes }}</h2>
+          <h2 class="quote-dislikes">👎 {{ popular_quote.dislikes }}</h2>
+        </div>
+      </div>
     {% endfor %}
 	</div>
 {% endblock %}

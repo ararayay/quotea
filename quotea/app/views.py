@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from .models import Quotes
@@ -41,6 +41,7 @@ def create_quote(request: HttpRequest) -> HttpResponse:
                     messages.error(request, 'У одного источника не должно быть больше 3 цитат.')
                 else:
                     new_quote.save()
+                    messages.info(request, 'Цитата успешно добавлена!')
             return redirect('home')
     
     # Если запрошена страница, выводим форму
@@ -52,3 +53,21 @@ def popular_quotes(request: HttpRequest) -> HttpResponse:
     # Сортировка по лайкам и выбор первых 10 цитат
     most_popular_quotes = Quotes.objects.order_by('-likes')[:10]
     return render(request, "popular_quotes.html", {"data": most_popular_quotes})
+
+def like_quote(request, quote_id):
+    # Лайк
+    quote = get_object_or_404(Quotes, id=quote_id)
+    quote.likes += 1
+    quote.save()
+
+    quote_data = Quotes.objects.get(id=quote_id)
+    return render(request, "random_quote.html", {"data": quote_data})
+
+def dislike_quote(request, quote_id):
+    # Дизлайк
+    quote = get_object_or_404(Quotes, id=quote_id)
+    quote.dislikes += 1
+    quote.save()
+    
+    quote_data = Quotes.objects.get(id=quote_id)
+    return render(request, "random_quote.html", {"data": quote_data})
