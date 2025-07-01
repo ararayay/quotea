@@ -6,5 +6,35 @@
 
 	<div class="create-container">
 		<h2>Добавление цитаты</h2>
+    <form method="post" enctype="multipart/form-data" class="create-form">
+			{% csrf_token %}
+
+			{% if form.non_field_errors %}
+				<div class="form-error">
+					{% for error in form.non_field_errors %}
+						<small>{{ error }}</small>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<div class="create-form-labels">
+				<label>Цитата</label>
+				{{ form.quote }}
+
+				<label>Источник</label>
+				{{ form.source }}
+
+				<label>Персонаж</label>
+				{{ form.character }}
+
+				<label>Вес</label>
+				{{ form.weight }}
+			</div>
+
+			<div class="buttons-container">
+				<button type="submit" class="save-btn">Добавить</button>
+				<a href="{% url 'home' %}" class="back-btn">Назад</a>
+			</div>
+		</form>
 	</div>
 {% endblock %}

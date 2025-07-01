@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
+from django.contrib import messages
 from .models import Quotes
+from .forms import AddQuote
 import random
 
 
@@ -24,7 +26,27 @@ def home(request: HttpRequest) -> HttpResponse:
     return render(request, "random_quote.html", {"data": random_quote_data})
 
 def create_quote(request: HttpRequest) -> HttpResponse:
-    return render(request, "create_quote.html")
+    # Если введены данные и отправлена форма, то добавляем цитату в бд
+    if request.method == 'POST':
+        add_form = AddQuote(request.POST)
+        if add_form.is_valid():
+            new_quote = add_form.save(commit=False)
+
+            # Проверка на дубликат
+            if Quotes.objects.filter(quote=new_quote.quote).exists():
+                messages.error(request, 'Такая цитата уже есть.')
+            else:
+                # Проверка на количество цитат одного источника
+                if Quotes.objects.filter(source=new_quote.source).count() == 3:
+                    messages.error(request, 'У одного источника не должно быть больше 3 цитат.')
+                else:
+                    new_quote.save()
+            return redirect('home')
+    
+    # Если запрошена страница, выводим форму
+    else:
+        add_form = AddQuote()
+        return render(request, "create_quote.html", {"form": add_form})
 
 def popular_quotes(request: HttpRequest) -> HttpResponse:
     # Сортировка по лайкам и выбор первых 10 цитат
