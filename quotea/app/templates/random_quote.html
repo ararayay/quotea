@@ -9,7 +9,7 @@
 				{% for message in messages %}
 					<p>{{ message }}</p>
 				{% endfor %}
-				<a href="{% url 'home' %}" class="modal-close-btn">ОК</a>
+				<a href="#" class="modal-close-btn" onclick="document.querySelector('.modal-overlay').style.display='none'; return false;">ОК</a>
 			</div>
 		</div>
 	{% endif %}

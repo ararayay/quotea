@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
-from .models import Quotes
+from .models import Quotes, QuoteLike
 from .forms import AddQuote
+from .utils import get_client_ip
 import random
 
 
@@ -57,17 +58,53 @@ def popular_quotes(request: HttpRequest) -> HttpResponse:
 def like_quote(request, quote_id):
     # Лайк
     quote = get_object_or_404(Quotes, id=quote_id)
-    quote.likes += 1
-    quote.save()
 
-    quote_data = Quotes.objects.get(id=quote_id)
-    return render(request, "random_quote.html", {"data": quote_data})
+    # Проверка IP
+    ip = get_client_ip(request)
+    if QuoteLike.objects.filter(quote=quote, ip_address=ip).exists():
+        quote_vote = QuoteLike.objects.get(quote=quote, ip_address=ip)
+
+        if quote_vote.vote_type == 'like':
+            messages.error(request, 'Вы уже лайкнули эту цитату.')
+        else:
+            quote.likes += 1
+            quote.dislikes -= 1
+            quote.save()
+
+            quote_vote.vote_type = 'like'
+            quote_vote.save()
+
+            messages.info(request, 'Вы ранее дизлайкнули эту цитату. Убрали дизлайк, поставили лайк!')
+    else:
+        QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='like')
+        quote.likes += 1
+        quote.save()
+    
+    return render(request, "random_quote.html", {"data": quote})
 
 def dislike_quote(request, quote_id):
     # Дизлайк
     quote = get_object_or_404(Quotes, id=quote_id)
-    quote.dislikes += 1
-    quote.save()
-    
-    quote_data = Quotes.objects.get(id=quote_id)
-    return render(request, "random_quote.html", {"data": quote_data})
+
+    # Проверка IP
+    ip = get_client_ip(request)
+    if QuoteLike.objects.filter(quote=quote, ip_address=ip).exists():
+        quote_vote = QuoteLike.objects.get(quote=quote, ip_address=ip)
+
+        if quote_vote.vote_type == 'dislike':
+            messages.error(request, 'Вы уже дизлайкнули эту цитату.')
+        else:
+            quote.likes -= 1
+            quote.dislikes += 1
+            quote.save()
+
+            quote_vote.vote_type = 'dislike'
+            quote_vote.save()
+
+            messages.info(request, 'Вы ранее лайкнули эту цитату. Убрали лайк, поставили дизлайк!')
+    else:
+        QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='dislike')
+        quote.dislikes += 1
+        quote.save()
+
+    return render(request, "random_quote.html", {"data": quote})
