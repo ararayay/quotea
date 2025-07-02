@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from .models import Quotes, QuoteLike
@@ -21,6 +22,7 @@ def home(request: HttpRequest) -> HttpResponse:
 
     return render(request, "random_quote.html", {"data": random_quote_data})
 
+@login_required
 def create_quote(request: HttpRequest) -> HttpResponse:
     # Если введены данные и отправлена форма, то добавляем цитату в бд
     if request.method == 'POST':
@@ -28,8 +30,8 @@ def create_quote(request: HttpRequest) -> HttpResponse:
         if add_form.is_valid():
             new_quote = add_form.save(commit=False)
 
-            # Проверка на дубликат
-            if Quotes.objects.filter(quote=new_quote.quote).exists():
+            # Проверка на дубликат (без учёта регистра)
+            if Quotes.objects.filter(quote__iexact=new_quote.quote).exists():
                 messages.error(request, 'Такая цитата уже есть.')
             else:
                 # Проверка на количество цитат одного источника

@@ -14,5 +14,5 @@ class AddQuote(ModelForm):
             }),
             'source': TextInput(),
             'character': TextInput(),
-            'weight': NumberInput(),
+            'weight': NumberInput(attrs={'min': 1, 'max': 100}),
         }

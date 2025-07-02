@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Вход</title>
+	<link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+	<div class="login-container">
+		<h2>Вход</h2>
+
+		<form method="post" enctype="multipart/form-data" class="login-form">
+			{% csrf_token %}
+
+			{% if form.non_field_errors %}
+				<div class="form-error">
+					{% for error in form.non_field_errors %}
+						<small>{{ error }}</small>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<div class="login-form">
+				<label>Логин</label>
+				{{ form.username }}
+
+				<label>Пароль</label>
+				{{ form.password }}
+			</div>
+			
+			<button class="btn-success" type="submit">Войти</button>
+		</form>
+	</div>
+</body>
+</html>
