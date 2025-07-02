@@ -5,6 +5,29 @@
 {% block content %}
 
 	<div class="popular-container">
+    <form method="get">
+      <div class="filter-items">
+        <select name="sort_by" class="filter-item">
+          <option value="views" {% if sort_by  == 'views' %}selected{% endif %}>Просмотры</option>
+          <option value="likes" {% if sort_by  == 'likes' %}selected{% endif %}>Лайки</option>
+          <option value="dislikes" {% if sort_by  == 'dislikes' %}selected{% endif %}>Дизлайки</option>
+        </select>
+
+        <select name="order" class="filter-item">
+          <option value="asc" {% if order == 'asc' %}selected{% endif %}>По возрастанию</option>
+          <option value="desc" {% if order == 'desc' %}selected{% endif %}>По убыванию</option>
+        </select>
+
+        <select name="number" class="filter-item">
+          {% for n in numbers_list %}
+            <option value="{{ n }}" {% if number == n %}selected{% endif %}>{{ n }} цитат</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" class="filter-item">🔍</button>
+      </div>
+    </form>
+
     {% for popular_quote in data %}
       <div class="quote-card">
         <h2 class="quote-text">{{ popular_quote.quote }}</h2>
@@ -18,4 +41,5 @@
       </div>
     {% endfor %}
 	</div>
+
 {% endblock %}

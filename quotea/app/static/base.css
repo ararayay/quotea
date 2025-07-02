@@ -56,19 +56,23 @@ body {
 
 /* Основной контент */
 main {
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Контейнер цитаты */
+.main-quote {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 800px;
   width: 100%;
-  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 800px;
 }
 
-/* Контейнер цитаты */
 .quote-container {
   background-color: white;
   padding: 40px;
@@ -144,9 +148,30 @@ main {
 
 /* Популярные цитаты */
 .popular-container {
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  justify-content: space-between;
+}
+
+.filter-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 15px;
+  width: 100%;
+}
+
+.filter-item {
+  padding: 10px 15px;
+  background-color: #4a90e2;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 18px;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
 }
 
 .quote-card {

@@ -51,9 +51,31 @@ def create_quote(request: HttpRequest) -> HttpResponse:
         return render(request, "create_quote.html", {"form": add_form})
 
 def popular_quotes(request: HttpRequest) -> HttpResponse:
-    # Сортировка по лайкам и выбор первых 10 цитат
-    most_popular_quotes = Quotes.objects.order_by('-likes')[:10]
-    return render(request, "popular_quotes.html", {"data": most_popular_quotes})
+    # Выбранные значения для фильтрации (по умолчанию лайки, по убыванию, 10 цитат)
+    sort_by = request.GET.get('sort_by', 'likes')
+    order = request.GET.get('order', 'desc')
+    number = int(request.GET.get('number', '10'))
+
+    if order == 'asc':
+        sorted_quotes = Quotes.objects.order_by(sort_by)[:number]
+    else:
+        sorted_quotes = Quotes.objects.order_by("-" + sort_by)[:number]
+
+    # Если цитат много, то максимально можно отобразить 30
+    if len(sorted_quotes) >= 30:
+        numbers = list(range(5, 30, 5))
+    else:
+        numbers = list(range(5, len(sorted_quotes) + 5, 5))
+    
+    context = {
+        'data': sorted_quotes,
+        'sort_by': sort_by,
+        'order': order,
+        'number': number,
+        'numbers_list': numbers
+    }
+
+    return render(request, "popular_quotes.html", context)
 
 def like_quote(request, quote_id):
     # Лайк
