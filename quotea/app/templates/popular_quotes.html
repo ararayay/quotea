@@ -19,9 +19,8 @@
         </select>
 
         <select name="number" class="filter-item">
-          {% for n in numbers_list %}
-            <option value="{{ n }}" {% if number == n %}selected{% endif %}>{{ n }} цитат</option>
-          {% endfor %}
+          <option value="5" {% if number == 5 %}selected{% endif %}>5 цитат</option>
+          <option value="10" {% if number == 10 %}selected{% endif %}>10 цитат</option>
         </select>
 
         <button type="submit" class="filter-item">🔍</button>
@@ -30,7 +29,7 @@
 
     {% for popular_quote in data %}
       <div class="quote-card">
-        <h2 class="quote-text">{{ popular_quote.quote }}</h2>
+        <h2 class="quote-text">"{{ popular_quote.quote }}"</h2>
         <h2 class="quote-source">{{ popular_quote.source }}</h2>
         <h2 class="quote-character">{{ popular_quote.character }}</h2>
         <div class="quote-stats">

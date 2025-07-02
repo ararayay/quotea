@@ -72,18 +72,11 @@ def popular_quotes(request: HttpRequest) -> HttpResponse:
     else:
         sorted_quotes = Quotes.objects.order_by("-" + sort_by)[:number]
 
-    # Если цитат много, то максимально можно отобразить 30
-    if len(sorted_quotes) >= 30:
-        numbers = list(range(5, 30, 5))
-    else:
-        numbers = list(range(5, len(sorted_quotes) + 5, 5))
-
     context = {
         'data': sorted_quotes,
         'sort_by': sort_by,
         'order': order,
         'number': number,
-        'numbers_list': numbers
     }
 
     return render(request, "popular_quotes.html", context)

@@ -163,6 +163,7 @@ main {
   flex-direction: column;
   gap: 20px;
   justify-content: space-between;
+  max-width: 800px;
 }
 
 .filter-items {
