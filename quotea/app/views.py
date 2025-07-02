@@ -9,7 +9,18 @@ import random
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    # Создание списков id и весов для выбора рандомной строки из базы данных
+    # Проверяем, есть ли в сессии ID цитаты для показа
+    show_quote_id = request.session.pop('show_quote_id', None)
+
+    if show_quote_id:
+        # Показываем конкретную цитату
+        try:
+            quote_data = Quotes.objects.get(id=show_quote_id)
+            return render(request, "random_quote.html", {"data": quote_data})
+        except Quotes.DoesNotExist:
+            pass
+
+    # Обычная логика для рандомной цитаты
     all_quotes_ids = list(Quotes.objects.all().values_list('id', flat=True))
     all_quotes_weights = list(Quotes.objects.all().values_list('weight', flat=True))
 
@@ -22,7 +33,7 @@ def home(request: HttpRequest) -> HttpResponse:
         random_quote_data.save()
 
         return render(request, "random_quote.html", {"data": random_quote_data})
-    
+
     return render(request, "random_quote.html", {"data": None})
 
 @login_required
@@ -44,7 +55,7 @@ def create_quote(request: HttpRequest) -> HttpResponse:
                     new_quote.save()
                     messages.info(request, 'Цитата успешно добавлена!')
             return redirect('home')
-    
+
     # Если запрошена страница, выводим форму
     else:
         add_form = AddQuote()
@@ -66,7 +77,7 @@ def popular_quotes(request: HttpRequest) -> HttpResponse:
         numbers = list(range(5, 30, 5))
     else:
         numbers = list(range(5, len(sorted_quotes) + 5, 5))
-    
+
     context = {
         'data': sorted_quotes,
         'sort_by': sort_by,
@@ -102,10 +113,12 @@ def like_quote(request, quote_id):
     else:
         QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='like')
         quote.likes += 1
-    
+
     quote.save()
-    
-    return render(request, "random_quote.html", {"data": quote})
+
+    # Сохраняем ID цитаты в сессии, чтобы показать именно эту цитату на главной
+    request.session['show_quote_id'] = quote_id
+    return redirect('home')
 
 # аналогично like_quote
 def dislike_quote(request, quote_id):
@@ -129,7 +142,9 @@ def dislike_quote(request, quote_id):
     else:
         QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='dislike')
         quote.dislikes += 1
-    
+
     quote.save()
 
-    return render(request, "random_quote.html", {"data": quote})
+    # Сохраняем ID цитаты в сессии, чтобы показать именно эту цитату на главной
+    request.session['show_quote_id'] = quote_id
+    return redirect('home')
