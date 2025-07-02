@@ -8,11 +8,15 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
-  color: #333;
+  color: #2c2c2c; /* чуть светлее темного */
   line-height: 1.6;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/img/background.jpg');
+  background-size: 200px 200px;
+  background-position: center;
+  background-repeat: repeat;
 }
 
 /* Шапка */
@@ -23,6 +27,8 @@ body {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
 }
 
 .logo-url {
@@ -48,10 +54,12 @@ body {
   border-radius: 8px;
   font-size: 18px;
   transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
 }
 
 .header-btn:hover {
-  background-color: #357abd;
+  background-color: #265ea8; /* более насыщенный синий */
 }
 
 /* Основной контент */
@@ -84,21 +92,21 @@ main {
 .quote-text {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #333;
+  color: #2c2c2c;
   font-style: italic;
   line-height: 1.4;
 }
 
 .quote-source {
   font-size: 18px;
-  color: #666;
+  color: #555; /* более мягкий темно-серый */
   margin-bottom: 10px;
   font-weight: 600;
 }
 
 .quote-character {
   font-size: 16px;
-  color: #888;
+  color: #777; /* мягкий серый */
   margin-bottom: 30px;
 }
 
@@ -113,7 +121,7 @@ main {
 
 .stat-item {
   font-size: 16px;
-  color: #666;
+  color: #555; /* мягкий серый */
   display: flex;
   align-items: center;
   gap: 5px;
@@ -126,24 +134,26 @@ main {
   transition: background-color 0.3s;
   display: flex;
   align-items: center;
+  border: none;
+  cursor: pointer;
 }
 
 .like-btn {
-  background-color: #e8f5e8;
-  color: #28a745;
+  background-color: #d9f0d9; /* светло-зеленый */
+  color: #218838; /* насыщенный зеленый */
 }
 
 .like-btn:hover {
-  background-color: #d4edda;
+  background-color: #c3e6cb;
 }
 
 .dislike-btn {
-  background-color: #fce8e8;
-  color: #dc3545;
+  background-color: #f8d7da; /* светло-красный */
+  color: #bd2130; /* насыщенный красный */
 }
 
 .dislike-btn:hover {
-  background-color: #f8d7da;
+  background-color: #f5c6cb;
 }
 
 /* Популярные цитаты */
@@ -174,6 +184,10 @@ main {
   cursor: pointer;
 }
 
+.filter-item:hover {
+  background-color: #265ea8;
+}
+
 .quote-card {
   background-color: white;
   padding: 25px;
@@ -184,16 +198,19 @@ main {
 .quote-card .quote-text {
   font-size: 20px;
   margin-bottom: 15px;
+  color: #2c2c2c;
 }
 
 .quote-card .quote-source {
   font-size: 16px;
   margin-bottom: 8px;
+  color: #555;
 }
 
 .quote-card .quote-character {
   font-size: 14px;
   margin-bottom: 20px;
+  color: #777;
 }
 
 .quote-card .quote-stats {
@@ -204,7 +221,7 @@ main {
 
 .quote-views, .quote-likes, .quote-dislikes {
   font-size: 14px;
-  color: #666;
+  color: #555;
   margin: 0;
 }
 
@@ -214,12 +231,16 @@ main {
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .create-container h2 {
   text-align: center;
   margin-bottom: 30px;
-  color: #333;
+  color: #2c2c2c;
   font-size: 28px;
 }
 
@@ -276,16 +297,16 @@ main {
 }
 
 .save-btn:hover {
-  background-color: #218838;
+  background-color: #1e7e34;
 }
 
 .back-btn {
-  background-color: #6c757d;
+  background-color: #6d7a84;
   color: white;
 }
 
 .back-btn:hover {
-  background-color: #5a6268;
+  background-color: #57606a;
 }
 
 /* Модальное окно */
@@ -311,7 +332,7 @@ main {
 
 .modal-content p {
   margin-bottom: 20px;
-  color: #333;
+  color: #2c2c2c;
   font-size: 16px;
 }
 
@@ -323,10 +344,12 @@ main {
   text-decoration: none;
   font-weight: 600;
   transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
 }
 
 .modal-close-btn:hover {
-  background-color: #357abd;
+  background-color: #265ea8;
 }
 
 /* Ошибки формы */
@@ -336,11 +359,12 @@ main {
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 20px;
-  border: 1px solid #f5c6cb;
+  border: 1px solid #f1aebf;
 }
 
 .form-error small {
   font-size: 14px;
+  color: #721c24;
 }
 
 /* Адаптивность */
