@@ -13,14 +13,17 @@ def home(request: HttpRequest) -> HttpResponse:
     all_quotes_ids = list(Quotes.objects.all().values_list('id', flat=True))
     all_quotes_weights = list(Quotes.objects.all().values_list('weight', flat=True))
 
-    random_quote_id = random.choices(all_quotes_ids, all_quotes_weights, k=1)[0]
-    random_quote_data = Quotes.objects.get(id=random_quote_id)
+    if len(all_quotes_ids) != 0:
+        random_quote_id = random.choices(all_quotes_ids, all_quotes_weights, k=1)[0]
+        random_quote_data = Quotes.objects.get(id=random_quote_id)
 
-    # Обновление кол-ва просмотров
-    random_quote_data.views += 1
-    random_quote_data.save()
+        # Обновление кол-ва просмотров
+        random_quote_data.views += 1
+        random_quote_data.save()
 
-    return render(request, "random_quote.html", {"data": random_quote_data})
+        return render(request, "random_quote.html", {"data": random_quote_data})
+    
+    return render(request, "random_quote.html", {"data": None})
 
 @login_required
 def create_quote(request: HttpRequest) -> HttpResponse:

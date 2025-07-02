@@ -372,35 +372,90 @@ main {
   .header {
     padding: 10px 15px;
   }
-  
+
   .logo-text {
     font-size: 24px;
   }
-  
+
   .header-btn {
     padding: 8px 12px;
     font-size: 16px;
   }
-  
+
   .quote-container, .create-container {
     padding: 25px 20px;
   }
-  
+
   .quote-text {
     font-size: 20px;
   }
-  
+
   .quote-stats {
     gap: 15px;
   }
-  
+
   .buttons-container {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .save-btn, .back-btn {
     width: 100%;
     max-width: 200px;
   }
+}
+
+.login-container {
+  max-width: 360px;
+  margin: 100px auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-success {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #388e3c;
+}
+
+.form-error small {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  color: #bd2130;
 }
