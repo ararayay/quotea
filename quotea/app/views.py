@@ -8,14 +8,9 @@ import random
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    # Создание списка id и весов для выбора рандомной строки из базы данных
-    all_quotes = list(Quotes.objects.all())
-    all_quotes_ids = []
-    all_quotes_weights = []
-
-    for object in all_quotes:
-        all_quotes_ids.append(object.id)
-        all_quotes_weights.append(object.weight)
+    # Создание списков id и весов для выбора рандомной строки из базы данных
+    all_quotes_ids = list(Quotes.objects.all().values_list('id', flat=True))
+    all_quotes_weights = list(Quotes.objects.all().values_list('weight', flat=True))
 
     random_quote_id = random.choices(all_quotes_ids, all_quotes_weights, k=1)[0]
     random_quote_data = Quotes.objects.get(id=random_quote_id)
