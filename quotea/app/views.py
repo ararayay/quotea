@@ -81,8 +81,7 @@ def popular_quotes(request: HttpRequest) -> HttpResponse:
 
     return render(request, "popular_quotes.html", context)
 
-def like_quote(request, quote_id):
-    # Лайк
+def reaction(request, quote_id, reaction_type):
     quote = get_object_or_404(Quotes, id=quote_id)
 
     # Проверка IP
@@ -91,11 +90,15 @@ def like_quote(request, quote_id):
         quote_vote = QuoteLike.objects.get(quote=quote, ip_address=ip)
 
         # Если уже был поставлен лайк, убираем его при повторном нажатии и удаляем строку в бд
-        if quote_vote.vote_type == 'like':
+        if quote_vote.vote_type == reaction_type == 'like':
             quote.likes -= 1
             quote_vote.delete()
-        # Если был дизлайк, он заменяется на лайк
-        else:
+        # Если был дизлайк, и на него снова нажали, убираем его
+        elif quote_vote.vote_type == reaction_type == 'dislike':
+            quote.dislikes -= 1
+            quote_vote.delete()
+        # Если был дизлайк, а поставили лайк, то заменяем на лайк
+        elif quote_vote.vote_type == 'dislike' and reaction_type == 'like':
             quote.likes += 1
             quote.dislikes -= 1
 
@@ -103,27 +106,7 @@ def like_quote(request, quote_id):
             quote_vote.save()
 
             messages.info(request, 'Вы ранее поставили дизлайк этой цитате. Убрали дизлайк, поставили лайк!')
-    else:
-        QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='like')
-        quote.likes += 1
-
-    quote.save()
-
-    # Сохраняем ID цитаты в сессии, чтобы показать именно эту цитату на главной
-    request.session['show_quote_id'] = quote_id
-    return redirect('home')
-
-# аналогично like_quote
-def dislike_quote(request, quote_id):
-    quote = get_object_or_404(Quotes, id=quote_id)
-
-    ip = get_client_ip(request)
-    if QuoteLike.objects.filter(quote=quote, ip_address=ip).exists():
-        quote_vote = QuoteLike.objects.get(quote=quote, ip_address=ip)
-
-        if quote_vote.vote_type == 'dislike':
-            quote.dislikes -= 1
-            quote_vote.delete()
+        # Если был лайк, а поставили дизлайк, заменяем на дизлайк
         else:
             quote.likes -= 1
             quote.dislikes += 1
@@ -133,8 +116,11 @@ def dislike_quote(request, quote_id):
 
             messages.info(request, 'Вы ранее поставили лайк этой цитате. Убрали лайк, поставили дизлайк!')
     else:
-        QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type='dislike')
-        quote.dislikes += 1
+        QuoteLike.objects.create(quote=quote, ip_address=ip, vote_type=reaction_type)
+        if reaction_type == 'like':
+            quote.likes += 1
+        else:
+            quote.dislikes += 1
 
     quote.save()
 
